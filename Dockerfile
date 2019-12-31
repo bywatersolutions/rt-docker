@@ -73,6 +73,9 @@ ENV PERL5LIB=/opt/rt/lib
 
 RUN cpanm RT::Authen::Token RT::Extension::MergeUsers && rm -fr ~/.cpanm
 
+# BWS extras
+RUN cpanm RT::Extension::Tags && rm -fr ~/.cpanm
+
 # tests fail if a valid database hasn't been setup
 RUN cpanm -f RT::Extension::REST2 && rm -fr ~/.cpanm
 
