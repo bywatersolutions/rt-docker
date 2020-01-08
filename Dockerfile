@@ -1,12 +1,12 @@
 FROM quay.io/perl/base-os:v3.10-2
 
-ENV RTVERSION 4.4.4
+ENV RTVERSION master
 
 RUN addgroup rt && adduser -D -G rt rt
 
 RUN apk --no-cache upgrade; apk add --no-cache gnupg emacs-nox \
    gd-dev graphviz perl-graphviz perl-gd \
-   mini-sendmail ssmtp
+   mini-sendmail ssmtp git
 
 # get some dependencies in the image and cached
 RUN cpanm HTML::Mason Moose Locale::Maketext::Fuzzy DBIx::SearchBuilder HTML::Formatter \
@@ -47,6 +47,8 @@ RUN cpan < /dev/null
 RUN mkdir /usr/src
 RUN curl -fLs https://download.bestpractical.com/pub/rt/release/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
 # RUN curl -fLs https://download.bestpractical.com/pub/rt/devel/rt-$RTVERSION.tar.gz | tar -C /usr/src -xz
+
+RUN git clone https://github.com/bestpractical/rt.git /usr/src/rt-$RTVERSION
 
 
 WORKDIR /usr/src/rt-$RTVERSION
